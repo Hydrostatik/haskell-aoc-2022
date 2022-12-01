@@ -2,6 +2,7 @@ module DayOne (highestCaloriesBrought, topThreeHighestCaloriesBrought) where
 
 import qualified Data.Text as T
 import qualified Text.Read as TR
+import qualified Data.Maybe as M
 
 {-
 Day 1: Calorie Counting
@@ -15,12 +16,10 @@ type ElfLedger = T.Text
 type Calories = Int
 
 carriedByElves :: ElfLedger -> [Calories]
-carriedByElves x = sum . fmap (unwrap . convertToInt) . T.lines <$> splitByElf x
+carriedByElves x = sum . M.mapMaybe convertToInt . T.lines <$> splitByElf x
     where
         splitByElf = T.splitOn "\n\n"
         convertToInt x = TR.readMaybe (T.unpack x) :: Maybe Int
-        unwrap (Just x) = x
-        unwrap Nothing = 0
 
 -- Find the Elf carrying the most Calories and find out how many total Calories they are carrying.
 highestCaloriesBrought :: ElfLedger -> Calories
