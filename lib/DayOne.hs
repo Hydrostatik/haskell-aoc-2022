@@ -5,9 +5,8 @@ import qualified Text.Read as TR
 
 {-
 Day 1: Calorie Counting
-es contained by the
-various meals, snacks, rations, etc. that they've
-The Elves take turns writing down the number of Calori brough with them,
+The Elves take turns writing down the number of Calories contained by the
+various meals, snacks, rations, etc. that they've brought with them,
 one item per line. Each Elf separates their own inventory from the
 previous Elf's inventory (if any) by a blank line.
 -}
