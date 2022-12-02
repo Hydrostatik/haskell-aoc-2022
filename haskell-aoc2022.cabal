@@ -23,7 +23,8 @@ extra-source-files: CHANGELOG.md
 
 library
     exposed-modules:  
-        DayOne
+        DayOne,
+        DayTwo
     build-depends:    
         base ^>=4.16.2.0,
         text ^>=1.2.5.0
