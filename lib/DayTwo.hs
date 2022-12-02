@@ -28,11 +28,10 @@ type Score = Int
 type Move = Char
 
 scoreByShape :: Move -> Score
-scoreByShape x
-    | x == 'X' = 1
-    | x == 'Y' = 2
-    | x == 'Z' = 3
-    | otherwise = 0
+scoreByShape 'X' = 1
+scoreByShape 'Y' = 2
+scoreByShape 'Z' = 3
+scoreByShape  _  = 0
 
 scoreByResult :: (Move, Move) -> Score
 scoreByResult (opponentChoice, ourChoice)
