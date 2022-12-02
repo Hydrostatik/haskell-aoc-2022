@@ -3,6 +3,7 @@ module DayOne (highestCaloriesBrought, topThreeHighestCaloriesBrought) where
 import qualified Data.Text as T
 import qualified Text.Read as TR
 import qualified Data.Maybe as M
+import qualified Data.List as L
 
 {-
 Day 1: Calorie Counting
@@ -27,7 +28,7 @@ highestCaloriesBrought x = maximum $ carriedByElves x
 
 -- Find the top three Elves carrying the most Calories and find out how many total Calories they are carrying.
 topThreeHighestCaloriesBrought :: ElfLedger -> Calories
-topThreeHighestCaloriesBrought x = (\(x,y,z) -> x + y + z) $ foldl (flip retainTopThree) (0, 0, 0) (carriedByElves x)
+topThreeHighestCaloriesBrought x = (\(x,y,z) -> x + y + z) $ L.foldl' (flip retainTopThree) (0, 0, 0) (carriedByElves x)
     where
         retainTopThree x (y, z, w)
             |  x > y = (x, y , z)
