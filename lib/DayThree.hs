@@ -5,7 +5,7 @@ import qualified Data.Char as C
 import qualified Data.List as L
 
 {-
-Day Three: Rucksack Reorginization
+Day Three: Rucksack Reorganization
 One Elf has the important job of loading all of the ruckacks with
 supplies for the jungle journey. Unfortunately, that Elf didn't quite
 follow the packing instructions, and so a few items now need to be rearranged.
