@@ -25,44 +25,51 @@ Your total score is the sum of your scores for each round. The score for a singl
 
 type ScoreSheet = T.Text
 type Score = Int
-type Move = Char
+
+class (Enum a, Bounded a, Eq a) => Circular a where
+     next :: a -> a
+     next a = if a == maxBound then minBound else succ a
+
+data Move = Rock | Paper | Scissors deriving (Show, Enum, Bounded, Eq)
+data Outcome = Win | Lose | Draw
+
+instance Circular Move
 
 scoreByShape :: Move -> Score
-scoreByShape 'X' = 1
-scoreByShape 'Y' = 2
-scoreByShape 'Z' = 3
-scoreByShape  _  = 0
+scoreByShape Rock = 1
+scoreByShape Paper = 2
+scoreByShape Scissors = 3
 
-scoreByResult :: (Move, Move) -> Score
-scoreByResult (opponentChoice, ourChoice)
-    | opponentChoice == 'A' && ourChoice == 'Y' || opponentChoice == 'B' && ourChoice == 'Z' || opponentChoice == 'C' && ourChoice == 'X' = 6
-    | opponentChoice == 'A' && ourChoice == 'X' || opponentChoice == 'B' && ourChoice == 'Y' || opponentChoice == 'C' && ourChoice == 'Z' = 3
+decodeOpponentMove :: Char -> Move
+decodeOpponentMove 'A' = Rock
+decodeOpponentMove 'B' = Paper
+decodeOpponentMove 'C' = Scissors
+
+decodePlayerMove :: Char -> Move
+decodePlayerMove 'X' = Rock
+decodePlayerMove 'Y' = Paper
+decodePlayerMove 'Z' = Scissors
+
+decodeOutcome :: Char -> Outcome
+decodeOutcome 'X' = Lose
+decodeOutcome 'Y' = Draw
+decodeOutcome 'Z' = Win
+
+scoreByResult :: Move -> Move -> Score
+scoreByResult x y
+    | next x == y = 6
+    | x == y = 3
     | otherwise = 0
 
-mutateForOutcome :: (Move, Move) -> (Move, Move)
-mutateForOutcome (opponentChoice, 'X') = (opponentChoice, losingMove opponentChoice)
-mutateForOutcome (opponentChoice, 'Y') = (opponentChoice, drawingMove opponentChoice)
-mutateForOutcome (opponentChoice, 'Z') = (opponentChoice, winningMove opponentChoice)
-
-winningMove :: Move -> Move
-winningMove 'A' = 'Y'
-winningMove 'B' = 'Z'
-winningMove 'C' = 'X'
-
-drawingMove :: Move -> Move
-drawingMove 'A'= 'X'
-drawingMove 'B'= 'Y'
-drawingMove 'C'= 'Z'
-
-losingMove :: Move -> Move
-losingMove 'A' = 'Z'
-losingMove 'B' = 'X'
-losingMove 'C' = 'Y'
+moveForOutcome :: Move -> Outcome -> (Move, Move)
+moveForOutcome x Lose = (x, next $ next x)
+moveForOutcome x Draw = (x, x)
+moveForOutcome x Win = (x, next x)
 
 -- What would your total score be if everything goes exactly according to your strategy guide?
 personalHighScore :: ScoreSheet -> Score
-personalHighScore x = sum ((\(x, y) -> scoreByShape y + scoreByResult (x, y)) . (\x -> (T.head $ head x, T.head $ last x)) . T.words <$> T.lines x)
+personalHighScore x = sum ((\(x, y) -> scoreByShape y + scoreByResult x y) . (\x -> (decodeOpponentMove $ T.head $ head x, decodePlayerMove $ T.head $ last x)) . T.words <$> T.lines x)
 
 -- If X actually instructed you to lose, Y instructed you to draw and Z instructed you to win, then what would your total score be?
 personalHighScore' :: ScoreSheet -> Score
-personalHighScore' x = sum ((\(x, y) -> scoreByShape y + scoreByResult (x, y)) . (\x -> mutateForOutcome (T.head $ head x, T.head $ last x)) . T.words <$> T.lines x)
+personalHighScore' x = sum ((\(x, y) -> scoreByShape y + scoreByResult x y) . (\x -> moveForOutcome (decodeOpponentMove $ T.head $ head x) (decodeOutcome $ T.head $ last x)) . T.words <$> T.lines x)
