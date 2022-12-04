@@ -2,6 +2,8 @@ module DayFour (totalAssignmentOverlaps, totalAssignmentOverlaps') where
 
 import qualified Data.Text as T
 import qualified Data.Bifunctor as B
+import qualified Control.Monad as C
+import qualified Control.Arrow as CA
 
 {-
 Day 4: Camp Cleanup
@@ -43,9 +45,9 @@ isOverlap (x, y) (x1, y1)
 
 -- In how many assignment pairs does one range fully contain the other?
 totalAssignmentOverlaps :: AssignmentLedger -> Overlaps
-totalAssignmentOverlaps x = length $ filter id $ uncurry isSuperSet . B.bimap parseRange parseRange . cleanSplit ',' . T.unpack <$> T.lines x
+totalAssignmentOverlaps x = length $ filter id $ uncurry isSuperSet . C.join (CA.***) parseRange . cleanSplit ',' . T.unpack <$> T.lines x
 
 -- In how many assignment pairs does one range contain some part of the other?
 totalAssignmentOverlaps' :: AssignmentLedger -> Overlaps
-totalAssignmentOverlaps' x = length $ filter id $ uncurry isOverlap . B.bimap parseRange parseRange . cleanSplit ',' . T.unpack <$> T.lines x
+totalAssignmentOverlaps' x = length $ filter id $ uncurry isOverlap . C.join (CA.***) parseRange . cleanSplit ',' . T.unpack <$> T.lines x
         
