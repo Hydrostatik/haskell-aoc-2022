@@ -23,10 +23,7 @@ cleanSplit :: Eq a => a -> [a] -> ([a], [a])
 cleanSplit char x = B.second tail $ span (/= char) x
 
 readRange :: (String, String) -> (Int, Int)
-readRange (x, y) = (lowerBound, upperBound)
-    where
-        lowerBound = read x :: Int
-        upperBound = read y :: Int
+readRange (x, y) = (read x, read y)
 
 parseRange :: [Char] -> (Int, Int)
 parseRange = readRange . cleanSplit '-'
