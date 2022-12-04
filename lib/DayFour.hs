@@ -29,16 +29,10 @@ parseRange :: [Char] -> (Int, Int)
 parseRange = readRange . cleanSplit '-'
 
 isSuperSet :: (Int, Int) -> (Int , Int) -> Bool
-isSuperSet (x, y) (x1, y1)
-    | x >= x1 && y <= y1 = True
-    | x <= x1 && y >= y1 = True
-    | otherwise = False
+isSuperSet (x, y) (x1, y1) = x >= x1 && y <= y1 || x <= x1 && y >= y1
 
 isOverlap :: (Int, Int) -> (Int, Int) -> Bool
-isOverlap (x, y) (x1, y1)
-    | x >= x1 && x <= y1 = True
-    | x1 >= x && x1 <= y = True
-    | otherwise = False
+isOverlap (x, y) (x1, y1) = x >= x1 && x <= y1 || x1 >= x && x1 <= y
 
 -- In how many assignment pairs does one range fully contain the other?
 totalAssignmentOverlaps :: AssignmentLedger -> Overlaps
@@ -47,4 +41,3 @@ totalAssignmentOverlaps x = length $ filter id $ uncurry isSuperSet . C.join (CA
 -- In how many assignment pairs does one range contain some part of the other?
 totalAssignmentOverlaps' :: AssignmentLedger -> Overlaps
 totalAssignmentOverlaps' x = length $ filter id $ uncurry isOverlap . C.join (CA.***) parseRange . cleanSplit ',' . T.unpack <$> T.lines x
-        
