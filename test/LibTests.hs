@@ -5,9 +5,10 @@ import Test.Hspec ( describe, it, shouldBe, Spec, hspec )
 import DayOne (highestCaloriesBrought, topThreeHighestCaloriesBrought)
 import DayTwo (personalHighScore, personalHighScore')
 import DayThree (totalRucksackOrderPriority, totalBadgePriority)
+import DayFour (totalAssignmentOverlaps, totalAssignmentOverlaps')
 
 main :: IO ()
-main =  mconcat $ fmap hspec [testDayOne, testDayTwo, testDayThree]
+main =  mconcat $ fmap hspec [testDayOne, testDayTwo, testDayThree, testDayFour]
 
 testDayOne :: Spec
 testDayOne = do
@@ -32,3 +33,11 @@ testDayThree = do
             totalRucksackOrderPriority "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw" `shouldBe` (157 :: Int)
         it "solves part two day three" $ do
             totalBadgePriority "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw" `shouldBe` (70 :: Int)
+
+testDayFour :: Spec
+testDayFour = do
+    describe "DayFour" $ do
+        it "solved part one day four" $ do
+            totalAssignmentOverlaps "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8" `shouldBe` (2 :: Int)
+        it "solved part two day four" $ do
+            totalAssignmentOverlaps' "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8" `shouldBe` (4 :: Int)
