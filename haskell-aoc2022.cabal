@@ -26,10 +26,12 @@ library
         DayOne,
         DayTwo,
         DayThree,
-        DayFour
+        DayFour,
+        DayFive
     build-depends:    
         base ^>=4.16.2.0,
-        text ^>=1.2.5.0
+        text ^>=1.2.5.0,
+        containers ^>=0.6.5.1
     hs-source-dirs:     lib
     default-language:   Haskell2010
     default-extensions: OverloadedStrings
@@ -45,6 +47,7 @@ executable haskell-aoc2022
     build-depends:    
         base ^>=4.16.2.0,
         text ^>=1.2.5.0,
+        containers ^>=0.6.5.1,
         haskell-aoc2022
     hs-source-dirs:   app
     default-language: Haskell2010
@@ -58,6 +61,7 @@ test-suite lib-test
     build-depends:    
         base ^>=4.16.2.0,
         text ^>=1.2.5.0,
+        containers ^>=0.6.5.1,
         hspec ^>=2.10.6,
         haskell-aoc2022
     default-extensions: OverloadedStrings

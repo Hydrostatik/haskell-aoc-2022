@@ -6,6 +6,7 @@ import qualified DayOne (highestCaloriesBrought, topThreeHighestCaloriesBrought)
 import qualified DayTwo (personalHighScore, personalHighScore')
 import qualified DayThree (totalRucksackOrderPriority, totalBadgePriority)
 import qualified DayFour (totalAssignmentOverlaps, totalAssignmentOverlaps')
+import qualified DayFive (resultOfRearrangement, resultOfRearrangement')
 
 main :: IO ()
 main = do
@@ -21,3 +22,6 @@ main = do
     dayFourInput <- TIO.readFile "input/DayFour.txt"
     putStrLn $ "Day Four Part One: " ++ show (DayFour.totalAssignmentOverlaps dayFourInput)
     putStrLn $ "Day Foud Part Two: " ++ show (DayFour.totalAssignmentOverlaps' dayFourInput)
+    dayFiveInput <- TIO.readFile "input/DayFive.txt"
+    putStrLn $ "Day Five Part One: " ++ show (DayFive.resultOfRearrangement dayFiveInput)
+    putStrLn $ "Day Five Part Two: " ++ show (DayFive.resultOfRearrangement' dayFiveInput)
