@@ -62,9 +62,9 @@ executeInstruction' xs i = (\(x, y) ->
         to = 1 `subtract` (i !! 2)
 
 -- determine which crate will end up on top of each stack
-resultOfRearrangement :: T.Text -> T.Text
+resultOfRearrangement :: ProcedureManual -> CratePriorityMessage
 resultOfRearrangement x = T.pack $ fmap T.head $ (\(x, y) -> L.foldl' executeInstruction (parseInitialStackCondition x) (parseInstruction <$> y)) $ cleanSplit "" $ T.lines x
 
 -- determine which crate will end up on top if the crates remain in the same order while being moved
-resultOfRearrangement' :: T.Text -> T.Text
+resultOfRearrangement' :: ProcedureManual -> CratePriorityMessage
 resultOfRearrangement' x = T.pack $ fmap T.head $ (\(x, y) -> L.foldl' executeInstruction' (parseInitialStackCondition x) (parseInstruction <$> y)) $ cleanSplit "" $ T.lines x
