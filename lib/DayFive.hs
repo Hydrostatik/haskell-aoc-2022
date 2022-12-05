@@ -35,36 +35,23 @@ parseInitialStackCondition xs = filter (/= "") $ fmap (T.pack . filter C.isAlpha
 parseInstruction :: T.Text -> [Int]
 parseInstruction x = read . T.unpack <$> T.words (T.filter (\x -> C.isDigit x || C.isSpace x) x)
 
-executeInstruction :: [T.Text] -> [Int] -> [T.Text]
-executeInstruction xs i = (\(x, y) -> 
+executeInstruction :: Bool -> [T.Text] -> [Int] -> [T.Text]
+executeInstruction shouldReverse xs i = (\(x, y) -> 
     if y == from 
         then T.drop (T.length cratesTaken) x 
     else if y == to 
         then cratesTaken <> x
     else x) <$> zip xs [0..]
     where
-        cratesTaken = T.reverse $ T.take crates (xs !! from) 
-        crates = head i
-        from = 1 `subtract` (i !! 1)
-        to = 1 `subtract` (i !! 2)
-
-executeInstruction' :: [T.Text] -> [Int] -> [T.Text]
-executeInstruction' xs i = (\(x, y) -> 
-    if y == from 
-        then T.drop (T.length cratesTaken) x 
-    else if y == to 
-        then cratesTaken <> x
-    else x) <$> zip xs [0..]
-    where
-        cratesTaken = T.take crates (xs !! from) 
+        cratesTaken = (if shouldReverse then T.reverse else id) $ T.take crates (xs !! from)
         crates = head i
         from = 1 `subtract` (i !! 1)
         to = 1 `subtract` (i !! 2)
 
 -- determine which crate will end up on top of each stack
 resultOfRearrangement :: ProcedureManual -> CratePriorityMessage
-resultOfRearrangement x = T.pack $ fmap T.head $ (\(x, y) -> L.foldl' executeInstruction (parseInitialStackCondition x) (parseInstruction <$> y)) $ cleanSplit "" $ T.lines x
+resultOfRearrangement x = T.pack $ fmap T.head $ (\(x, y) -> L.foldl' (executeInstruction True) (parseInitialStackCondition x) (parseInstruction <$> y)) $ cleanSplit "" $ T.lines x
 
 -- determine which crate will end up on top if the crates remain in the same order while being moved
 resultOfRearrangement' :: ProcedureManual -> CratePriorityMessage
-resultOfRearrangement' x = T.pack $ fmap T.head $ (\(x, y) -> L.foldl' executeInstruction' (parseInitialStackCondition x) (parseInstruction <$> y)) $ cleanSplit "" $ T.lines x
+resultOfRearrangement' x = T.pack $ fmap T.head $ (\(x, y) -> L.foldl' (executeInstruction False) (parseInitialStackCondition x) (parseInstruction <$> y)) $ cleanSplit "" $ T.lines x
