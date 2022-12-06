@@ -25,12 +25,15 @@ group :: Int -> [a] -> [[a]]
 group x ys = take x ys : group x (drop 1 ys)
 
 isPacketUnique :: [Char] -> Bool
-isPacketUnique x = S.size (S.fromList x) == length x
+isPacketUnique = uniqueness S.empty
+    where
+        uniqueness set (x:xs) = not (x `S.member` set) && uniqueness (x `S.insert` set) xs
+        uniqueness set [] = True
 
 -- How many characters need to be processed before the first start-of-packet marker is detected?
 findStartOfPacketMarker :: Packet -> Index
-findStartOfPacketMarker x = (fst . last) $ head $ dropWhile (not . isPacketUnique . fmap snd) (group 4 $ zip [1..] (T.unpack x))
+findStartOfPacketMarker = fst . last . head . dropWhile (not . isPacketUnique . fmap snd) . group 4 . zip [1..] . T.unpack
 
 -- How many characters need to be processed before the first start-of-message marker (14 consecutive unique characters) is detected?
 findStartOfMessageMarker :: Packet -> Index
-findStartOfMessageMarker x = (fst . last) $ head $ dropWhile (not . isPacketUnique . fmap snd) (group 14 $ zip [1..] (T.unpack x))
+findStartOfMessageMarker = fst . last . head . dropWhile (not . isPacketUnique . fmap snd) . group 14 . zip [1..] . T.unpack
