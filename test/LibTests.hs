@@ -8,9 +8,10 @@ import DayTwo (personalHighScore, personalHighScore')
 import DayThree (totalRucksackOrderPriority, totalBadgePriority)
 import DayFour (totalAssignmentOverlaps, totalAssignmentOverlaps')
 import DayFive (resultOfRearrangement, resultOfRearrangement')
+import DaySix (findStartOfPacketMarker, findStartOfMessageMarker)
 
 main :: IO ()
-main =  mconcat $ fmap hspec [testDayOne, testDayTwo, testDayThree, testDayFour, testDayFive]
+main =  mconcat $ fmap hspec [testDayOne, testDayTwo, testDayThree, testDayFour, testDayFive, testDaySix]
 
 testDayOne :: Spec
 testDayOne = do
@@ -51,3 +52,11 @@ testDayFive = do
             resultOfRearrangement "    [D]    \n[N] [C]    \n[Z] [M] [P]\n 1   2   3 \n\nmove 1 from 2 to 1\nmove 3 from 1 to 3\nmove 2 from 2 to 1\nmove 1 from 1 to 2" `shouldBe` ("CMZ" :: T.Text)
         it "solves part two day five" $ do
             resultOfRearrangement' "    [D]    \n[N] [C]    \n[Z] [M] [P]\n 1   2   3 \n\nmove 1 from 2 to 1\nmove 3 from 1 to 3\nmove 2 from 2 to 1\nmove 1 from 1 to 2" `shouldBe` ("MCD" :: T.Text)
+
+testDaySix :: Spec
+testDaySix = do
+    describe "DaySix" $ do
+        it "solves part one day six" $ do
+            findStartOfPacketMarker "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" `shouldBe` (11 :: Int)
+        it "solved part two day six" $ do
+            findStartOfMessageMarker "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" `shouldBe` (29 :: Int)

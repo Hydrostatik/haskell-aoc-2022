@@ -7,6 +7,7 @@ import qualified DayTwo (personalHighScore, personalHighScore')
 import qualified DayThree (totalRucksackOrderPriority, totalBadgePriority)
 import qualified DayFour (totalAssignmentOverlaps, totalAssignmentOverlaps')
 import qualified DayFive (resultOfRearrangement, resultOfRearrangement')
+import qualified DaySix (findStartOfPacketMarker, findStartOfMessageMarker)
 
 main :: IO ()
 main = do
@@ -25,3 +26,6 @@ main = do
     dayFiveInput <- TIO.readFile "input/DayFive.txt"
     putStrLn $ "Day Five Part One: " ++ show (DayFive.resultOfRearrangement dayFiveInput)
     putStrLn $ "Day Five Part Two: " ++ show (DayFive.resultOfRearrangement' dayFiveInput)
+    daySixInput <- TIO.readFile "input/DaySix.txt"
+    putStrLn $ "Day Six Part One: " ++ show (DaySix.findStartOfPacketMarker daySixInput)
+    putStrLn $ "Day Six Part Two: " ++ show (DaySix.findStartOfMessageMarker daySixInput)

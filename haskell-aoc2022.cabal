@@ -27,7 +27,8 @@ library
         DayTwo,
         DayThree,
         DayFour,
-        DayFive
+        DayFive,
+        DaySix
     build-depends:    
         base ^>=4.16.2.0,
         text ^>=1.2.5.0,
